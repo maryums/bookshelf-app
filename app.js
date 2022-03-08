@@ -3,7 +3,7 @@ const submitBtn = document.querySelector("button")
 const form = document.querySelector("form");
 const formDiv = document.querySelector(".form-div")
 const addBookBtn = document.querySelector("#add-book")
-const removeBtn = document.querySelectorAll(".remove")
+// const removeBtn = document.querySelectorAll(".remove")
 form.addEventListener("submit", addBookToLibrary)
 form.addEventListener("submit", displayBookShelf)
 
@@ -87,14 +87,18 @@ function displayBookShelf(e) {
     });
 
     const removeBtn = document.querySelectorAll(".remove")
-    removeBtn.forEach(element => {
-        element.addEventListener("click", (event) => {
-            const arrIndex = event.path[1].id
+
+    for (let i = 0; i < removeBtn.length; i++) {
+        removeBtn[i].addEventListener("click", (e) => {
+
+            const arrIndex = e.target.parentNode.id
             myLibrary.splice(arrIndex, 1)
             console.log(`removed ${arrIndex} at index `)
             displayBookShelf()
         })
-    })
+
+    }
+
 
     const toggleButton = document.querySelectorAll('.readToggle');
 
@@ -110,15 +114,6 @@ function displayBookShelf(e) {
     });
 }
 
-
-removeBtn.forEach(element => {
-    element.addEventListener("click", (event) => {
-        const arrIndex = event.path[1].id
-        myLibrary.splice(arrIndex, 1)
-        console.log(`removed ${arrIndex} at index `)
-        displayBookShelf()
-    })
-})
 
 
 displayBookShelf();
