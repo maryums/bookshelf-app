@@ -89,8 +89,7 @@ button:active {
 }
 
 span {
-    align-self: flex-end;
-    font-weight: 700;
+border: 2px red solid;
 }
 
 .remove {

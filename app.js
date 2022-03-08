@@ -3,7 +3,9 @@ const submitBtn = document.querySelector("button")
 const form = document.querySelector("form");
 const formDiv = document.querySelector(".form-div")
 const addBookBtn = document.querySelector("#add-book")
-
+const removeBtn = document.querySelectorAll(".remove")
+form.addEventListener("submit", addBookToLibrary)
+form.addEventListener("submit", displayBookShelf)
 
 
 document.querySelector(".form-div").style.display = "none";
@@ -35,8 +37,6 @@ let myLibrary = [{
 ];
 
 
-
-
 function Book(title, author, pages, read) {
     this.title = title
     this.author = author
@@ -65,22 +65,27 @@ function displayBookShelf(e) {
     const myLibraryContainer = document.querySelector('.my-library')
     myLibraryContainer.innerHTML = ''
     let count = 0;
+
     myLibrary.forEach(element => {
-        console.log(element)
         const newDiv = document.createElement('div')
         newDiv.className = 'card'
         newDiv.setAttribute("id", count++)
 
+        if (element.read === true) {
+            element.read = 'Book Status: Read'
+        } else {
+            element.read = 'Book Status: Unread'
+        }
+
         newDiv.innerHTML = `
         <button class="remove">remove</button>
         <p> ${element.title} by ${element.author} </p>
-       <p>  Book Length ${element.pages} pages </p>
-       <p> Read Status: ${element.read} </p>
-
- 
+       <p>  Book Length: ${element.pages} pages </p>
+       <button class="readToggle">  ${element.read}   </button>
         `
         myLibraryContainer.append(newDiv)
     });
+
     const removeBtn = document.querySelectorAll(".remove")
     removeBtn.forEach(element => {
         element.addEventListener("click", (event) => {
@@ -90,13 +95,20 @@ function displayBookShelf(e) {
             displayBookShelf()
         })
     })
+
+    const toggleButton = document.querySelectorAll('.readToggle');
+
+    toggleButton.forEach(element => {
+        element.addEventListener("click", () => {
+            if (element.innerHTML === "Book Status: Read") {
+                element.innerHTML = "Book Status: Unread";
+            } else {
+                element.innerHTML = "Book Status: Read";
+            }
+        })
+
+    });
 }
-
-displayBookShelf();
-const removeBtn = document.querySelectorAll(".remove")
-form.addEventListener("submit", addBookToLibrary)
-form.addEventListener("submit", displayBookShelf)
-
 
 
 removeBtn.forEach(element => {
@@ -107,3 +119,6 @@ removeBtn.forEach(element => {
         displayBookShelf()
     })
 })
+
+
+displayBookShelf();
