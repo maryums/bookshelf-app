@@ -1,18 +1,31 @@
 @import url('https://fonts.googleapis.com/css2?family=Hubballi&display=swap');
 
+html {
+  box-sizing: border-box;
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
 body {
     font-family: 'Hubballi', cursive;
-    background-image: linear-gradient(to right, #fc5c7d, #6a82fb);
+    background-image: linear-gradient(to right, #074e88, #6a82fb);
+}
+
+.container {
+  width: 90%;
+  margin: auto;
 }
 
 h1 {
     font-size: 4em;
+    margin: 20px 0 20px 0;
 }
-form {
 
+form {
     display: flex;
     flex-direction: column;
-    width: 500px;
+    width: 100%;
     background: rgba(250, 247, 249, 0.3);
     border-radius: 10px;
     padding: 20px;
@@ -38,7 +51,6 @@ button {
   font-weight: 600;
   justify-content: center;
   margin: 0;
-  min-height: 2rem;
   padding: 10px;
   position: relative;
   text-decoration: none;
@@ -70,10 +82,15 @@ button:active {
 }
 
 .my-library {
+  margin-top: 20px;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    align-self: auto;
+}
+
+.my-library p {
+  margin: 0;
+  line-height: 1.5;
 }
 
 .card {
@@ -88,17 +105,8 @@ button:active {
     padding: 20px;
 }
 
-span {
-border: 2px red solid;
-}
-
 .remove {
     align-self: flex-end;
     border: 2px black solid;
 }
 
-#add-button {
-    border: 2px green solid;
-    min-height: 6rem;
-    padding: 25px;
-}

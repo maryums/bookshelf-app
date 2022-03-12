@@ -3,26 +3,26 @@ const submitBtn = document.querySelector("button")
 const form = document.querySelector("form");
 const formDiv = document.querySelector(".form-div")
 const addBookBtn = document.querySelector("#add-book")
-// const removeBtn = document.querySelectorAll(".remove")
 form.addEventListener("submit", addBookToLibrary)
 form.addEventListener("submit", displayBookShelf)
-
 
 document.querySelector(".form-div").style.display = "none";
 
 addBookBtn.addEventListener("click", () => {
     if (formDiv.style.display === "none") {
         formDiv.style.display = "flex"
+        addBookBtn.innerText = "Close"
     } else {
         formDiv.style.display = "none"
+        addBookBtn.innerText = "Add Book"
     }
 
 })
 
 let myLibrary = [{
-    title: "Hop on Pop",
-    author: "Dr Suess",
-    pages: 34,
+    title: "Eloquent JavaScript",
+    author: "Marijn Haverbeke",
+    pages: 472,
     read: true,
 },
 
@@ -30,10 +30,8 @@ let myLibrary = [{
     title: "Game of Thrones",
     author: "George R. R. Martin",
     pages: 694,
-    read: true
+    read: true,
 },
-
-
 ];
 
 
@@ -49,15 +47,19 @@ function Book(title, author, pages, read) {
 
 
 function addBookToLibrary(e) {
-    // do stuff here
     e.preventDefault();
-    // console.log(e.target.elements.title.value)
-    let new_book = new Book(e.target.elements.title.value, e.target.elements.author.value, e.target.elements.pages.value, e.target.elements.read.checked)
-    e.target.elements.title.value = ''
-    e.target.elements.author.value = ''
-    e.target.elements.pages.value = ''
-    e.target.elements.read.checked = false;
-    myLibrary.push(new_book)
+
+    if (e.target.elements.title.value === '') {
+        e.target.elements.title.value = `Please enter at least name of book!`
+    } else {
+        let new_book = new Book(e.target.elements.title.value, e.target.elements.author.value, e.target.elements.pages.value, e.target.elements.read.checked)
+        e.target.elements.title.value = ''
+        e.target.elements.author.value = ''
+        e.target.elements.pages.value = ''
+        e.target.elements.read.checked = false;
+        myLibrary.push(new_book)
+    }
+
 }
 
 
@@ -73,7 +75,7 @@ function displayBookShelf(e) {
 
         if (element.read === true) {
             element.read = 'Book Status: Read'
-        } else {
+        } else if (element.read === false) {
             element.read = 'Book Status: Unread'
         }
 
@@ -96,9 +98,7 @@ function displayBookShelf(e) {
             console.log(`removed ${arrIndex} at index `)
             displayBookShelf()
         })
-
     }
-
 
     const toggleButton = document.querySelectorAll('.readToggle');
 
@@ -113,7 +113,5 @@ function displayBookShelf(e) {
 
     });
 }
-
-
 
 displayBookShelf();
