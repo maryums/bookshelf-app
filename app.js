@@ -5,7 +5,9 @@ const formDiv = document.querySelector(".form-div")
 const addBookBtn = document.querySelector("#add-book")
 form.addEventListener("submit", addBookToLibrary)
 form.addEventListener("submit", displayBookShelf)
+const allStars = document.querySelectorAll(".fa-star")
 
+let currentID = ''
 document.querySelector(".form-div").style.display = "none";
 
 addBookBtn.addEventListener("click", () => {
@@ -19,10 +21,40 @@ addBookBtn.addEventListener("click", () => {
 
 })
 
+function clearAll() {
+    allStars.forEach(el => {
+        el.classList.remove("fas")
+        el.classList.add("far")
+    })
+}
+
+function currentPrev(element) {
+    let result = [element]
+    while (element = element.previousElementSibling)
+        result.push(element)
+    return result
+}
+
+
+for (const star of allStars) {
+    star.addEventListener("click", (e) => {
+        currentID = e.target.id
+        clearAll()
+        const previous = currentPrev(star)
+        previous.forEach(element => {
+            if (element.classList.contains("far")) {
+                element.classList.remove("far")
+                element.classList.add("fas")
+            }
+        })
+    })
+}
+
 let myLibrary = [{
     title: "Eloquent JavaScript",
     author: "Marijn Haverbeke",
     pages: 472,
+    stars: 5,
     read: true,
 },
 
@@ -30,33 +62,45 @@ let myLibrary = [{
     title: "Game of Thrones",
     author: "George R. R. Martin",
     pages: 694,
+    stars: 5,
     read: true,
 },
 ];
 
 
-function Book(title, author, pages, read) {
+function Book(title, author, pages, stars, read) {
     this.title = title
     this.author = author
     this.pages = pages
-    this.read = read;
-
-
-    return console.log(`${title} is by ${author} and its ${pages} pages long and  it's read: ${read}`)
+    this.stars = stars
+    this.read = read
+    return console.log(`${title} is by ${author} and its ${pages} pages long and  it's read: ${read} its also ${stars} out of 5`)
 }
 
 
 function addBookToLibrary(e) {
-    e.preventDefault();
+
+
+    e.preventDefault()
 
     if (e.target.elements.title.value === '') {
         e.target.elements.title.value = `Please enter at least name of book!`
     } else {
-        let new_book = new Book(e.target.elements.title.value, e.target.elements.author.value, e.target.elements.pages.value, e.target.elements.read.checked)
+        let new_book = new Book(
+            e.target.elements.title.value,
+            e.target.elements.author.value,
+            e.target.elements.pages.value,
+            parseInt(currentID),
+            e.target.elements.read.checked
+        )
+
         e.target.elements.title.value = ''
         e.target.elements.author.value = ''
         e.target.elements.pages.value = ''
+        currentID = ''
+        clearAll()
         e.target.elements.read.checked = false;
+
         myLibrary.push(new_book)
     }
 
@@ -83,6 +127,7 @@ function displayBookShelf(e) {
         <button class="remove">remove</button>
         <p> ${element.title} by ${element.author} </p>
        <p>  Book Length: ${element.pages} pages </p>
+       <p> Rating: ${element.stars} out of 5 stars </p>
        <button class="readToggle">  ${element.read}   </button>
         `
         myLibraryContainer.append(newDiv)
