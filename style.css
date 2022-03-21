@@ -1,5 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Hubballi&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=EB+Garamond&family=Oswald&display=swap');
 html {
   box-sizing: border-box;
 }
@@ -8,8 +7,8 @@ html {
 }
 
 body {
-    font-family: 'Hubballi', cursive;
-    background-image: linear-gradient(to right, #074e88, #6a82fb);
+    font-family: 'EB Garamond', serif;
+    background-image: linear-gradient(to right, #1c75be, #474e74);
 }
 
 .container {
@@ -18,7 +17,8 @@ body {
 }
 
 h1 {
-    font-size: 4em;
+  font-family: 'Oswald', sans-serif;
+    font-size: 3.2em;
     margin: 20px 0 20px 0;
 }
 
@@ -50,8 +50,8 @@ button {
   display: inline-flex;
   font-weight: 600;
   justify-content: center;
-  margin: 0;
-  padding: 10px;
+  margin: 10px 0 10px 0;
+  padding: 7px;
   position: relative;
   text-decoration: none;
   transition: all 250ms;
@@ -82,7 +82,7 @@ button:active {
 }
 
 .my-library {
-  margin-top: 20px;
+    margin-top: 15px;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -90,7 +90,7 @@ button:active {
 
 .my-library p {
   margin: 0;
-  line-height: 1.5;
+  line-height: 1.7;
 }
 
 .card {
@@ -102,7 +102,7 @@ button:active {
     box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
     overflow: hidden;
     width: 300px;
-    padding: 20px;
+    padding: 15px;
 }
 
 .remove {

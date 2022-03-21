@@ -3,12 +3,38 @@ const submitBtn = document.querySelector("button")
 const form = document.querySelector("form");
 const formDiv = document.querySelector(".form-div")
 const addBookBtn = document.querySelector("#add-book")
+const readInput = document.querySelector('#read')
 form.addEventListener("submit", addBookToLibrary)
 form.addEventListener("submit", displayBookShelf)
 const allStars = document.querySelectorAll(".fa-star")
-
 let currentID = ''
-document.querySelector(".form-div").style.display = "none";
+document.querySelector(".form-div").style.display = "none"
+document.querySelector('.stars').style.display = "none"
+
+let myLibrary = localStorage.getItem('library')
+    ? JSON.parse(localStorage.getItem('library'))
+    : [{
+        title: "Eloquent JavaScript",
+        author: "Marijn Haverbeke",
+        pages: 472,
+        stars: 5,
+        read: true,
+    },
+
+    {
+        title: "Game of Thrones",
+        author: "George R. R. Martin",
+        pages: 694,
+        stars: 5,
+        read: true,
+    }]
+
+
+
+localStorage.setItem('library', JSON.stringify(myLibrary))
+const data = JSON.parse(localStorage.getItem('library'))
+
+
 
 addBookBtn.addEventListener("click", () => {
     if (formDiv.style.display === "none") {
@@ -17,6 +43,21 @@ addBookBtn.addEventListener("click", () => {
     } else {
         formDiv.style.display = "none"
         addBookBtn.innerText = "Add Book"
+    }
+
+
+
+})
+
+readInput.addEventListener("change", (e) => {
+    if (e.target.checked) {
+        document.querySelector('.stars').style.display = "block"
+    }
+    else {
+        document.querySelector('.stars').style.display = "none"
+        currentID = ''
+        e.target.checked = false
+
     }
 
 })
@@ -50,62 +91,55 @@ for (const star of allStars) {
     })
 }
 
-let myLibrary = [{
-    title: "Eloquent JavaScript",
-    author: "Marijn Haverbeke",
-    pages: 472,
-    stars: 5,
-    read: true,
-},
-
-{
-    title: "Game of Thrones",
-    author: "George R. R. Martin",
-    pages: 694,
-    stars: 5,
-    read: true,
-},
-];
 
 
-function Book(title, author, pages, stars, read) {
-    this.title = title
-    this.author = author
-    this.pages = pages
-    this.stars = stars
-    this.read = read
-    return console.log(`${title} is by ${author} and its ${pages} pages long and  it's read: ${read} its also ${stars} out of 5`)
+class Book {
+    constructor(title, author, pages, stars, read) {
+        this.title = title;
+        this.author = author;
+        this.pages = pages;
+        this.stars = stars;
+        this.read = read;
+        return console.log(`${title} is by ${author} and its ${pages} pages long and  it's read: ${read} its also ${stars} out of 5`);
+    }
 }
 
 
 function addBookToLibrary(e) {
-
-
     e.preventDefault()
 
-    if (e.target.elements.title.value === '') {
+    if (!e.target.elements.title.value) {
         e.target.elements.title.value = `Please enter at least name of book!`
-    } else {
-        let new_book = new Book(
-            e.target.elements.title.value,
-            e.target.elements.author.value,
-            e.target.elements.pages.value,
-            parseInt(currentID),
-            e.target.elements.read.checked
-        )
-
-        e.target.elements.title.value = ''
-        e.target.elements.author.value = ''
-        e.target.elements.pages.value = ''
-        currentID = ''
-        clearAll()
-        e.target.elements.read.checked = false;
-
-        myLibrary.push(new_book)
     }
 
-}
+    if (!isNaN(e.target.elements.author.value) || !e.target.elements.author.value) {
+        e.target.elements.author.value = `Please enter a valid author name`
+    }
 
+    if (isNaN(e.target.elements.pages.value) || !e.target.elements.pages.value) {
+        e.target.elements.pages.value = `Please enter a valid number`
+    }
+
+    let new_book = new Book(
+        e.target.elements.title.value,
+        e.target.elements.author.value,
+        e.target.elements.pages.value,
+        parseInt(currentID),
+        e.target.elements.read.checked
+    )
+    console.log(e.target.elements)
+    e.target.elements.title.value = ''
+    e.target.elements.author.value = ''
+    e.target.elements.pages.value = ''
+    currentID = ''
+    clearAll()
+    e.target.elements.read.checked = false;
+
+    myLibrary.push(new_book)
+    localStorage.setItem('library', JSON.stringify(myLibrary))
+
+
+}
 
 function displayBookShelf(e) {
     const myLibraryContainer = document.querySelector('.my-library')
@@ -123,14 +157,27 @@ function displayBookShelf(e) {
             element.read = 'Book Status: Unread'
         }
 
-        newDiv.innerHTML = `
-        <button class="remove">remove</button>
-        <p> ${element.title} by ${element.author} </p>
-       <p>  Book Length: ${element.pages} pages </p>
-       <p> Rating: ${element.stars} out of 5 stars </p>
-       <button class="readToggle">  ${element.read}   </button>
-        `
-        myLibraryContainer.append(newDiv)
+        if (!element.stars) {
+            newDiv.innerHTML = `
+            <button class="remove">remove</button>
+            <p> ${element.title} by ${element.author} </p>
+           <p>  Book Length: ${element.pages} pages </p>
+           <button class="readToggle">  ${element.read}   </button>
+            `
+            myLibraryContainer.append(newDiv)
+        } else {
+            newDiv.innerHTML = `
+            <button class="remove">remove</button>
+            <p> ${element.title} by ${element.author} </p>
+           <p>  Book Length: ${element.pages} pages </p>
+           <p> Rating: ${element.stars} out of 5 stars </p>
+           <button class="readToggle">  ${element.read}   </button>
+            `
+            myLibraryContainer.append(newDiv)
+        }
+
+
+
     });
 
     const removeBtn = document.querySelectorAll(".remove")
