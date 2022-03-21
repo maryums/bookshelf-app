@@ -32,6 +32,7 @@ let myLibrary = localStorage.getItem('library')
 
 
 localStorage.setItem('library', JSON.stringify(myLibrary))
+
 const data = JSON.parse(localStorage.getItem('library'))
 
 
@@ -108,35 +109,30 @@ class Book {
 function addBookToLibrary(e) {
     e.preventDefault()
 
-    if (!e.target.elements.title.value) {
-        e.target.elements.title.value = `Please enter at least name of book!`
+    if (!e.target.elements.title.value || !isNaN(e.target.elements.author.value) || (e.target.elements.pages.value) < 0 || !e.target.elements.author.value || !e.target.elements.pages.value || isNaN(e.target.elements.pages.value)) {
+        alert("Please check if book details are valid")
+    } else {
+
+        let new_book = new Book(
+            e.target.elements.title.value,
+            e.target.elements.author.value,
+            e.target.elements.pages.value,
+            parseInt(currentID),
+            e.target.elements.read.checked
+        )
+        console.log(e.target.elements)
+        e.target.elements.title.value = ''
+        e.target.elements.author.value = ''
+        e.target.elements.pages.value = ''
+        currentID = ''
+        e.target.elements.read.checked = false;
+        clearAll()
+
+        myLibrary.push(new_book)
+        localStorage.setItem('library', JSON.stringify(myLibrary))
+
+
     }
-
-    if (!isNaN(e.target.elements.author.value) || !e.target.elements.author.value) {
-        e.target.elements.author.value = `Please enter a valid author name`
-    }
-
-    if (isNaN(e.target.elements.pages.value) || !e.target.elements.pages.value) {
-        e.target.elements.pages.value = `Please enter a valid number`
-    }
-
-    let new_book = new Book(
-        e.target.elements.title.value,
-        e.target.elements.author.value,
-        e.target.elements.pages.value,
-        parseInt(currentID),
-        e.target.elements.read.checked
-    )
-    console.log(e.target.elements)
-    e.target.elements.title.value = ''
-    e.target.elements.author.value = ''
-    e.target.elements.pages.value = ''
-    currentID = ''
-    clearAll()
-    e.target.elements.read.checked = false;
-
-    myLibrary.push(new_book)
-    localStorage.setItem('library', JSON.stringify(myLibrary))
 
 
 }
@@ -175,9 +171,6 @@ function displayBookShelf(e) {
             `
             myLibraryContainer.append(newDiv)
         }
-
-
-
     });
 
     const removeBtn = document.querySelectorAll(".remove")
@@ -188,6 +181,7 @@ function displayBookShelf(e) {
             const arrIndex = e.target.parentNode.id
             myLibrary.splice(arrIndex, 1)
             console.log(`removed ${arrIndex} at index `)
+            localStorage.setItem('library', JSON.stringify(myLibrary))
             displayBookShelf()
         })
     }
