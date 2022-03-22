@@ -46,8 +46,6 @@ addBookBtn.addEventListener("click", () => {
         addBookBtn.innerText = "Add Book"
     }
 
-
-
 })
 
 readInput.addEventListener("change", (e) => {
@@ -130,8 +128,7 @@ function addBookToLibrary(e) {
 
         myLibrary.push(new_book)
         localStorage.setItem('library', JSON.stringify(myLibrary))
-
-
+        document.querySelector('.stars').style.display = "none"
     }
 
 
