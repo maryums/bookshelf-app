@@ -188,7 +188,7 @@ function displayBookShelf(e) {
 
     for (let i = 0; i < toggleButton.length; i++) {
         toggleButton[i].addEventListener("click", (e) => {
-            if (e.target.innerText = "Book Status: Unread") {
+            if (e.target.innerText === "Book Status: Unread") {
                 const arrIndex = e.target.parentNode.id
                 myLibrary[arrIndex].read = true
                 const userRatingInput = prompt("After reading it, how would you rate this book out of 5 stars?")
